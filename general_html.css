@@ -1,0 +1,38 @@
+a { color:#5D5D9E; } 
+a:visited { color:#5D5D9E; } 
+a:active { color:#5C615E; } 
+a:hover { color:#B2B3B4; } 
+#table_355ab16c th { border: 1px solid #8C8C8C;  } 
+#table_355ab16c td { border: 1px solid #8C8C8C;  } 
+body { background-color:#ADD8E6; padding:0;  margin: 0; }
+.textstyle1 { text-align:center; }
+.textstyle2 { font-size:40pt; font-family:'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', sans-serif; color:#250D04; text-decoration:underline;  }
+.textstyle3 { font-size:40pt; font-family:Arial, Helvetica, sans-serif; color:#250D04; text-decoration:underline;  }
+.textstyle4 { text-align:left; }
+#table_355ab16c { box-sizing: border-box; vertical-align: bottom; position:relative; display: inline-table; width:100%; height:180px; background:none; border: 1px solid #8C8C8C; table-layout: fixed;  }
+#cell_54323429 {  }
+.textstyle5 { font-size:12pt; font-family:Arial, Helvetica, sans-serif; color:#000000;  }
+#cell_3c70b732 {  }
+#cell_2cc87846 {  }
+#cell_6983ed74 {  }
+#cell_7ecb5c5f {  }
+#cell_5d6fd260 {  }
+#cell_12dc9f48 {  }
+#cell_24ad08ac {  }
+#cell_4072b823 {  }
+#cell_3b4af324 {  }
+#cell_45c793e9 {  }
+#cell_2fd71083 {  }
+#cell_55665f04 {  }
+#cell_149e2e75 {  }
+#cell_4789644e {  }
+#cell_7b322585 {  }
+#cell_5f88a5e0 {  }
+#cell_6511bd12 {  }
+#button_c86b57a { box-sizing: border-box; border-radius: 9px; position:absolute; left:5%; top:24%; width:150px; height:40px; background-color:#26A4CD; background: linear-gradient(to bottom,#26A4CD, #11495C 50%, #0D3947 50%, #092933); border: 2px solid #82A5E0;  }
+.vcenterstyle1 { display: table; width: 100%; height: 100%; }
+.vcenterstyle2 { display: table-cell; vertical-align: middle; }
+.textstyle6 { font-size:18pt; font-family:Arial, Helvetica, sans-serif; color:#FFFFFF;  }
+#button_74924e67 { box-sizing: border-box; border-radius: 9px; position:absolute; left:55%; top:24%; width:150px; height:40px; background-color:#26A4CD; background: linear-gradient(to bottom,#26A4CD, #11495C 50%, #0D3947 50%, #092933); border: 2px solid #82A5E0;  }
+#button_284acd31 { box-sizing: border-box; border-radius: 9px; position:absolute; left:28%; top:24%; width:150px; height:40px; background-color:#26A4CD; background: linear-gradient(to bottom,#26A4CD, #11495C 50%, #0D3947 50%, #092933); border: 2px solid #82A5E0;  }
+#button_533dc5f6 { box-sizing: border-box; border-radius: 9px; position:absolute; left:79%; top:24%; width:150px; height:40px; background-color:#26A4CD; background: linear-gradient(to bottom,#26A4CD, #11495C 50%, #0D3947 50%, #092933); border: 2px solid #82A5E0;  }
