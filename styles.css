@@ -157,3 +157,34 @@ ul.search-list li.active {
     width: 50%;
   }
 }
+
+/* Base: PC/tablet - 4 columns */
+table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+td {
+  width: 25%;
+  padding: 10px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+/* Mobile: 1 column */
+@media (max-width: 768px) {
+  td {
+    width: 100%;
+    display: block;
+  }
+
+  tr {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  table {
+    width: 100%;
+  }
+}
