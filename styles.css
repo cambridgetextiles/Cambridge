@@ -158,6 +158,10 @@ ul.search-list li.active {
   }
 }
 
+.content h1 {
+  text-align: center;
+}
+
 /* Base: PC/tablet - 4 columns */
 table {
   width: 100%;
