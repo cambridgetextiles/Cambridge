@@ -192,3 +192,11 @@ td {
     width: 100%;
   }
 }
+
+a img.favicon {
+  width: 17px;
+  height: 17px;
+  margin-right: 6px;
+  vertical-align: -2px; /* nudges icon slightly down to align with text */
+  opacity: 0.9;
+}

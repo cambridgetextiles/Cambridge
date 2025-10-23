@@ -364,6 +364,37 @@
     const slideIndex = hashToSlide[window.location.hash];
     if (slideIndex !== undefined) goToSlide(slideIndex);
   });
+
+    <!-- 🧠 Automatic Favicon Script -->
+    document.addEventListener("DOMContentLoaded", function() {
+      document.querySelectorAll("a[href]").forEach(a => {
+        // ❌ Skip button-style links or navigation links
+        if (a.classList.contains("button") || a.closest("button") || a.closest(".navbar")) return;
+
+        try {
+          const url = new URL(a.href);
+          const faviconUrl = `https://www.google.com/s2/favicons?sz=32&domain=${url.hostname}`;
+
+          // Prevent adding multiple icons
+          if (a.querySelector(".favicon")) return;
+
+          // Create favicon image
+          const img = document.createElement("img");
+          img.src = faviconUrl;
+          img.className = "favicon";
+          img.alt = "";
+
+          // Wrap text in a <span> so underline only affects text
+          const span = document.createElement("span");
+          span.textContent = a.textContent.trim();
+
+          a.textContent = "";
+          a.append(img, span);
+        } catch (e) {
+          console.warn("Invalid link:", a.href);
+        }
+      });
+    });
 </script>
 </body>
 </html>
