@@ -1,400 +1,671 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Homepage</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="shortcut icon" href="https://img.icons8.com/fluency/512/connection-status-on.png"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Homepage</title>
+<link rel="shortcut icon" href="https://img.icons8.com/pastel-glyph/512/security-shield.png"/>
+
+<style>
+  body {
+    font-family: 'Comic Sans MS', sans-serif;
+    margin: 0;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: #fff;
+    overflow: hidden;  /* ❗ No page scroll */
+    font-size: 16px;
+  }
+
+/* Container does NOT stretch slides */
+.container {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Slides DO NOT flex, DO NOT stretch */
+.slide {
+    position: absolute;
+    top: 80px;           /* under top menu */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 1000px;
+
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 40px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 40px rgba(0,0,0,0.3);
+
+    opacity: 0;
+    transform: scale(0.9) translate(-50%, 40px);
+    transition: all 0.4s ease;
+
+    display: none;
+    max-height: calc(100vh - 200px); /* no overlap with buttons */
+    overflow-y: auto;                /* scroll only if needed */
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.slide::-webkit-scrollbar {
+    display: none;
+}
+
+/* Active slide visible & animated */
+.slide.active {
+    display: block;
+    opacity: 1;
+    transform: scale(1) translate(-50%, 0);
+    height: auto;   /* CRITICAL: auto-resizes to content */
+}
+
+  h2 {
+    font-size: 2.5rem;
+    color: #38bdf8;
+    margin-bottom: 15px;
+  }
+
+  p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+  }
+
+  /* Top Navigation — Fixed */
+  .jump-menu {
+    position: fixed;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 100;
+  }
+
+  .jump-menu button {
+    padding: 8px 18px;
+    background: #38bdf8;
+    border: none;
+    color: #fff;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .jump-menu button:hover {
+    background: #0ea5e9;
+  }
+
+  /* Table styling */
+  table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+  }
+
+  td {
+    padding: 12px;
+    text-align: center;
+  }
+
+  a {
+    color: #38bdf8;
+    text-decoration: none;
+    font-size: 1.1rem;
+  }
+
+  a:hover {
+    color: #0ea5e9;
+    text-decoration: underline;
+  }
+
+  /* Nav buttons fixed at bottom */
+  .nav-buttons {
+    position: fixed;
+    bottom: 40px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    z-index: 50;
+  }
+
+  .nav-buttons button {
+    padding: 12px 25px;
+    background: #38bdf8;
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .nav-buttons button:hover {
+    background: #0ea5e9;
+  }
+
+  footer {
+    position: fixed;
+    bottom: 10px;
+    right: 20px;
+    font-size: 14px;
+    opacity: 0.7;
+    z-index: 50;
+  }
+
+  a img {
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  /* 🔹 MOBILE SUPPORT: stack content in one column */
+@media (max-width: 768px) {
+  .slide {
+    width: 90%;        /* narrower slides on mobile */
+    padding: 20px;     /* reduce padding */
+  }
+
+  h2 {
+    font-size: 1.8rem;
+  }
+
+  p {
+    font-size: 1rem;
+  }
+
+  /* Table: stack cells vertically */
+  table, tbody, tr, td {
+    display: block;
+    width: 100%;
+  }
+
+  tr {
+    margin-bottom: 15px; /* space between rows */
+  }
+
+  td {
+    text-align: left;     /* align text left for mobile */
+    padding: 10px 0;      /* spacing between stacked cells */
+    border-bottom: 1px solid rgba(255,255,255,0.2); /* optional separator */
+  }
+
+  /* Buttons smaller and mobile-friendly */
+  .jump-menu button {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .nav-buttons button {
+    padding: 10px 18px;
+    font-size: 14px;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+  .slide {
+    width: 95%;
+    padding: 15px;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  p {
+    font-size: 0.95rem;
+  }
+
+  .jump-menu button {
+    padding: 5px 10px;
+    font-size: 11px;
+  }
+
+  .nav-buttons button {
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+}
+</style>
 </head>
 <body>
-  <div class="navbar">
-    <ul>
-      <li><a href="#intro" onclick="goToSlide(0)">Intro</a></li>
-      <li><a href="#general" onclick="goToSlide(1)">General</a></li>
-      <li><a href="#accounts" onclick="goToSlide(2)">Accounts</a></li>
-      <li><a href="#sales" onclick="goToSlide(3)">Sales</a></li>
-      <li><a href="#E-Commerce" onclick="goToSlide(4)">E-Commerce</a></li>
-	  <li><a href="https://sanad89d.github.io/homepage/">Hompeage</a></li>
-    </ul>
+
+<div class="container">
+
+  <!-- TOP NAVIGATION -->
+  <div class="jump-menu">
+    <button onclick="goTo('general')">General</button>
+    <button onclick="goTo('accounts')">Accounts</button>
+    <button onclick="goTo('sales')">Sales</button>
+    <button onclick="goTo('ecommerce')">Ecommerce</button>
+    <button onclick="goTo('ginesys')">Ginesys</button>
   </div>
 
-  <div class="slider-container" id="slider">
-    <div class="slide" style="background-image: url('images/intro.webp');">
-      <div class="content">
-        <h1>Search Tools</h1>
-        <input type="text" id="searchBox" placeholder="Search links..." onkeyup="filterLinks(event)" />
-        <ul id="searchResults" class="search-list" tabindex="0"></ul>
-      </div>
-    </div>
+  <!-- SLIDES ONLY (NO TITLE/INTRO/CONCLUSION/QA) -->
 
-    <div class="slide" style="background-image: url('images/general.webp');">
-      <div class="content">
-        <h1>General</h1>
-        <table>
-<tbody>
-										  <tr>
-											<td> <a href="https://accounts.google.com/"> Gmail </a> </td>
-											<td> <a href="https://mail.yahoo.com/"> Yahoo </a> </td>
-											<td> <a href="https://outlook.live.com/owa/"> Outlook </a> </td>
-											<td> <a href="https://www.zoho.com/mail/"> Zoho </a> </td>
-											</tr>
-											
-											<tr>
-											<td> <a href="https://account.proton.me/mail"> Proton </a> </td>
-											<td> <a href="https://mail.tutanota.com/login"> Tutanota </a> </td>
-											<td> <a href="https://www.mailo.com/?language=en&page=id"> Mailo </a> </td>
-											<td> <a href="https://atomicmail.io/app/auth/sign-in"> Atomic </a> </td>
-											</tr>
-											
-											<tr>
-											<td> <a href="https://temp-mail.org/en/"> Temp Mail </a> </td>
-											<td> <a href="https://cryptogmail.com/"> Crypto Gmail </a> </td>
-											<td> <a href="https://inboxes.com/"> Inboxes </a> </td>
-											<td> <a href="https://generator.email/"> Email </a> </td>
-											</tr>
-											
-											<tr>
-											<td> <a href="https://www.youtube.com/"> Youtube </a> </td>
-											<td> <a href="https://odysee.com/"> Odysee </a> </td>
-											<td> <a href="https://api.invidious.io/"> Invidious </a> </td>
-											<td> <a href="https://www.twitch.tv/"> Twitch </a> </td>
-											</tr>
-											
-											<tr>
-											<td> <a href="https://search.brave.com/"> Brave </a> </td>
-											<td> <a href="https://duckduckgo.com/"> DuckDuckGo </a> </td>
-											<td> <a href="https://www.startpage.com/"> Startpage </a> </td>
-											<td> <a href="https://searx.space/"> Searx </a> </td>
-											</tr>
-											
-											<tr>
-											<td> <a href="https://transfer.pcloud.com/"> pCloud Transfer </a> </td>
-											<td> <a href="https://wetransfer.com/"> WeTransfer </a> </td>
-											<td> <a href="https://send.tresorit.com/"> Tresorit Send </a> </td>
-											<td> <a href="https://www.mirrored.to/"> Mirrored </a> </td>
-											</tr>
-											
-											<tr>
-											<td> <a href="https://send.vis.ee/"> Send </a> </td>
-											<td> <a href="https://www.strac.io/share"> Strac </a> </td>
-											<td> <a href="https://www.swisstransfer.com/en-in"> SwissTransfer </a> </td>
-											<td> <a href="https://toffeeshare.com/"> ToffeeShare </a> </td>
-											</tr>
-											
-											<tr>
-											<td> <a href="https://sendfileonline.com/"> SendFile </a> </td>
-											<td> <a href="https://rdrop.link/"> rDrop </a> </td>
-											<td> <a href="https://www.sharedrop.io/"> ShareDrop </a> </td>
-											<td> <a href="https://pairdrop.net/"> PairDrop </a> </td>
-											</tr>
-											
-											<tr>
-											<td> <a href="https://send-anywhere.com/"> Send Anywhere </a> </td>
-											<td> <a href="https://www.sharrr.com//"> Sharrr </a> </td>
-											<td> <a href="https://www.dwservice.net/"> DWService </a> </td>
-											<td> <a href="https://login.tailscale.com/"> Tailscale </a> </td>
-											</tr>
-											
-											<tr>
-											<td> <a href="https://www.amazon.in/"> Amazon </a> </td>
-											<td> <a href="https://www.flipkart.com/"> Flipkart </a> </td>
-											<td> <a href="https://www.snapdeal.com/"> Snapdeal </a> </td>
-											<td> <a href="https://www.cashify.in/"> Cashify </a> </td>
-											</tr>
-											
-											<tr>
-											<td> <a href="https://www.photopea.com/"> Photopea </a> </td>
-											<td> <a href="https://pixlr.com/suite/"> Pilxr </a> </td>
-											<td> <a href="https://www.upscale.media/"> Upscale </a> </td>
-											<td> <a href="https://cleanup.pictures/"> Clean Pictures </a> </td>
-											</tr>
-											
-											<tr>
-											<td> <a href="https://web.whatsapp.com/"> WhatsApp </a> </td>
-											<td> <a href="https://messages.google.com/web/authentication"> Messages </a> </td>
-											<td> <a href="https://app.element.io/"> Element </a> </td>
-											<td> <a href="https://web.telegram.org/k/"> Telegram </a> </td>
-											</tr>
-											
-											<tr>
-											<td> <a href="https://viktorstrate.github.io/qr-gen/"> QR Gen </a> </td>
-											<td> <a href="https://www.qrcode-monkey.com/"> QRCode Monkey </a> </td>
-											<td> <a href="https://quickqr.art/"> QuickQR </a> </td>
-											<td> <a href="https://qrcodemaker.org/"> QRCode Maker </a> </td>
-											</tr>
-											
-											<tr>
-											<td> <a href="https://www.calculateme.com/"> Calculate Me </a> </td>
-											<td> <a href="https://converter-now.web.app"> Converter Now </a> </td>
-											<td> <a href="https://www.online-convert.com/"> Online Convert </a> </td>
-											<td> <a href="https://pinetools.com/"> Pine Tools </a> </td>
-											</tr>
-											
-											<tr>
-											<td> <a href="https://www.sejda.com/pdf-editor"> Sejda </a> </td>
-											<td> <a href="https://tools.pdf24.org/en/edit-pdf"> PDF24 Edit </a> </td>
-											<td> <a href="https://www.pdfzorro.com/"> PDF Zorro </a> </td>
-											<td> <a href="https://www.pdfescape.com/online-pdf-editor/"> PDF Escape </a> </td>
-											</tr>
-											
-											<tr>
-											<td> <a href="https://www.ilovepdf.com/"> I Love PDF </a> </td>
-											<td> <a href="https://tools.pdf24.org/en/"> PDF24 Tools </a> </td>
-											<td> <a href="https://pdf.to/"> PDF To </a> </td>
-											<td> <a href="https://www.pdf2go.com/"> PDF2Go </a> </td>
-											</tr>
+  <div class="slide active" id="general">
+      <h2>General</h2>
+    <table>
+			<tbody>
+				<tr>
+				<td> <a href="https://accounts.google.com/"> Gmail </a> </td>
+				<td> <a href="https://mail.yahoo.com/"> Yahoo </a> </td>
+				<td> <a href="https://outlook.live.com/owa/"> Outlook </a> </td>
+				<td> <a href="https://www.zoho.com/mail/"> Zoho </a> </td>
+				</tr>
+				
+				<tr>
+				<td> <a href="https://account.proton.me/mail"> Proton </a> </td>
+				<td> <a href="https://mail.tutanota.com/login"> Tutanota </a> </td>
+				<td> <a href="https://www.mailo.com/?language=en&page=id"> Mailo </a> </td>
+				<td> <a href="https://atomicmail.io/app/auth/sign-in"> Atomic </a> </td>
+				</tr>
+				
+				<tr>
+				<td> <a href="https://temp-mail.org/en/"> Temp Mail </a> </td>
+				<td> <a href="https://cryptogmail.com/"> Crypto Gmail </a> </td>
+				<td> <a href="https://inboxes.com/"> Inboxes </a> </td>
+				<td> <a href="https://generator.email/"> Email </a> </td>
+				</tr>
+				
+				<tr>
+				<td> <a href="https://www.youtube.com/"> Youtube </a> </td>
+				<td> <a href="https://odysee.com/"> Odysee </a> </td>
+				<td> <a href="https://api.invidious.io/"> Invidious </a> </td>
+				<td> <a href="https://www.twitch.tv/"> Twitch </a> </td>
+				</tr>
+				
+				<tr>
+				<td> <a href="https://search.brave.com/"> Brave </a> </td>
+				<td> <a href="https://duckduckgo.com/"> DuckDuckGo </a> </td>
+				<td> <a href="https://www.startpage.com/"> Startpage </a> </td>
+				<td> <a href="https://searx.space/"> Searx </a> </td>
+				</tr>
+				
+				<tr>
+				<td> <a href="https://transfer.pcloud.com/"> pCloud Transfer </a> </td>
+				<td> <a href="https://wetransfer.com/"> WeTransfer </a> </td>
+				<td> <a href="https://send.tresorit.com/"> Tresorit Send </a> </td>
+				<td> <a href="https://www.mirrored.to/"> Mirrored </a> </td>
+				</tr>
+				
+				<tr>
+				<td> <a href="https://send.vis.ee/"> Send </a> </td>
+				<td> <a href="https://www.strac.io/share"> Strac </a> </td>
+				<td> <a href="https://www.swisstransfer.com/en-in"> SwissTransfer </a> </td>
+				<td> <a href="https://toffeeshare.com/"> ToffeeShare </a> </td>
+				</tr>
+				
+				<tr>
+				<td> <a href="https://sendfileonline.com/"> SendFile </a> </td>
+				<td> <a href="https://rdrop.link/"> rDrop </a> </td>
+				<td> <a href="https://www.sharedrop.io/"> ShareDrop </a> </td>
+				<td> <a href="https://pairdrop.net/"> PairDrop </a> </td>
+				</tr>
+				
+				<tr>
+				<td> <a href="https://send-anywhere.com/"> Send Anywhere </a> </td>
+				<td> <a href="https://www.sharrr.com//"> Sharrr </a> </td>
+				<td> <a href="https://www.dwservice.net/"> DWService </a> </td>
+				<td> <a href="https://login.tailscale.com/"> Tailscale </a> </td>
+				</tr>
+				
+				<tr>
+				<td> <a href="https://www.amazon.in/"> Amazon </a> </td>
+				<td> <a href="https://www.flipkart.com/"> Flipkart </a> </td>
+				<td> <a href="https://www.snapdeal.com/"> Snapdeal </a> </td>
+				<td> <a href="https://www.cashify.in/"> Cashify </a> </td>
+				</tr>
+				
+				<tr>
+				<td> <a href="https://www.photopea.com/"> Photopea </a> </td>
+				<td> <a href="https://pixlr.com/suite/"> Pilxr </a> </td>
+				<td> <a href="https://www.upscale.media/"> Upscale </a> </td>
+				<td> <a href="https://cleanup.pictures/"> Clean Pictures </a> </td>
+				</tr>
+				
+				<tr>
+				<td> <a href="https://web.whatsapp.com/"> WhatsApp </a> </td>
+				<td> <a href="https://messages.google.com/web/authentication"> Messages </a> </td>
+				<td> <a href="https://app.element.io/"> Element </a> </td>
+				<td> <a href="https://web.telegram.org/k/"> Telegram </a> </td>
+				</tr>
+				
+				<tr>
+				<td> <a href="https://viktorstrate.github.io/qr-gen/"> QR Gen </a> </td>
+				<td> <a href="https://www.qrcode-monkey.com/"> QRCode Monkey </a> </td>
+				<td> <a href="https://quickqr.art/"> QuickQR </a> </td>
+				<td> <a href="https://qrcodemaker.org/"> QRCode Maker </a> </td>
+				</tr>
+				
+				<tr>
+				<td> <a href="https://www.calculateme.com/"> Calculate Me </a> </td>
+				<td> <a href="https://converter-now.web.app"> Converter Now </a> </td>
+				<td> <a href="https://www.online-convert.com/"> Online Convert </a> </td>
+				<td> <a href="https://pinetools.com/"> Pine Tools </a> </td>
+				</tr>
+				
+				<tr>
+				<td> <a href="https://www.sejda.com/pdf-editor"> Sejda </a> </td>
+				<td> <a href="https://tools.pdf24.org/en/edit-pdf"> PDF24 Edit </a> </td>
+				<td> <a href="https://www.pdfzorro.com/"> PDF Zorro </a> </td>
+				<td> <a href="https://www.pdfescape.com/online-pdf-editor/"> PDF Escape </a> </td>
+				</tr>
+				
+				<tr>
+				<td> <a href="https://www.ilovepdf.com/"> I Love PDF </a> </td>
+				<td> <a href="https://tools.pdf24.org/en/"> PDF24 Tools </a> </td>
+				<td> <a href="https://pdf.to/"> PDF To </a> </td>
+				<td> <a href="https://www.pdf2go.com/"> PDF2Go </a> </td>
+				</tr>
 
-                      <tr>
-											<td> <a href="https://stirlingpdf.io/"> StrlingPDF </a> </td>
-											<td> <a href="https://www.printfriendly.com/"> PrintFriendly </a> </td>
-											<td> <a href="https://languagetool.org/"> Language Tool </a> </td>
-											<td> <a href="https://haveibeenpwned.com/"> haveibeenpwned </a> </td>
-											</tr>
+        <tr>
+				<td> <a href="https://stirlingpdf.io/"> StrlingPDF </a> </td>
+				<td> <a href="https://www.printfriendly.com/"> PrintFriendly </a> </td>
+				<td> <a href="https://languagetool.org/"> Language Tool </a> </td>
+				<td> <a href="https://haveibeenpwned.com/"> haveibeenpwned </a> </td>
+				</tr>
 
-											<tr>
-											<td> <a href="https://downforeveryoneorjustme.com/"> Down For </a> </td>
-											<td> <a href="https://down.com/"> Down </a> </td>
-											<td> <a href="https://downdetector.in/"> Down Detector </a> </td>
-											<td> <a href="https://istheservicedown.in/"> Service Down </a> </td>
-											</tr>
-											
-											<tr>
-											<td> <a href="https://chatgpt.com/"> ChatGPT </a> </td>
-											<td> <a href="https://gemini.google.com/app"> Gemini </a> </td>
-											<td> <a href="https://copilot.microsoft.com/chats"> Copilot </a> </td>
-											<td> <a href="https://grok.com/"> Grok </a> </td>
-											</tr>
+				<tr>
+				<td> <a href="https://downforeveryoneorjustme.com/"> Down For </a> </td>
+				<td> <a href="https://down.com/"> Down </a> </td>
+				<td> <a href="https://downdetector.in/"> Down Detector </a> </td>
+				<td> <a href="https://istheservicedown.in/"> Service Down </a> </td>
+				</tr>
+				
+				<tr>
+				<td> <a href="https://chatgpt.com/"> ChatGPT </a> </td>
+				<td> <a href="https://gemini.google.com/app"> Gemini </a> </td>
+				<td> <a href="https://copilot.microsoft.com/chats"> Copilot </a> </td>
+				<td> <a href="https://grok.com/"> Grok </a> </td>
+				</tr>
 
-											<tr>
-											<td> <a href="https://www.virustotal.com/gui/home/upload"> Virus Total </a> </td>
-											<td> <a href="https://virusscan.jotti.org/en-US/scan-file"> Virus Scanner </a> </td>
-											<td> <a href="https://www.hybrid-analysis.com/"> Hybrid Analysis </a> </td>
-											<td> <a href="https://webscout.io/"> Webscout </a> </td>
-											</tr>
-											
-											<tr>
-											<td> <a href="https://10fastfingers.com/"> Fast Fingers </a> </td>
-											<td> <a href="https://monkeytype.com/"> Monkey Type </a> </td>
-											<td> <a href="https://www.typingcore.com/test"> Typing Core </a> </td>
-											<td> <a href="https://www.typing.com/student/lessons"> Typing </a> </td>
-											</tr>
-											
-											<tr>
-											<td> <a href="https://checkshorturl.com/"> CheckShortURL </a> </td>
-											<td> <a href="https://www.expandurl.net/"> ExpandURL </a> </td>
-											<td> <a href="https://www.getlinkinfo.com/"> GetLinkInfo </a> </td>
-											<td> <a href="https://www.shorturl.at/"> Short URL </a> </td>
-											</tr>
-											
-											<tr>
-											<td> <a href="https://free-url-shortener.rb.gy/"> URL Shortener </a> </td>
-											<td> <a href="https://rapidapi-example-url-shortener.vercel.app/"> Rapid API </a> </td>
-											<td> <a href="https://shorturl.me/"> Short URL </a> </td>
-											<td> <a href="https://tinyurl.com/"> Tiny URL </a> </td>
-											</tr>
-											
-										</tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="slide" style="background-image: url('images/accounts.webp');">
-      <div class="content">
-        <h1>Accounts</h1>
-        <table>
-<tbody>
-										<tr>
-										<td> <a href="https://netbanking.hdfcbank.com/netbanking/"> HDFC </a> </td>
-										<td> <a href="https://unifiedportal-emp.epfindia.gov.in/epfo/"> EPFO </a> </td>
-										<td> <a href="https://udyamregistration.gov.in/UAM-convert-udyam-msme-free-registration.htm"> UAM/UDYAM </a> </td>
-										<td> <a href="https://eportal.incometax.gov.in/iec/foservices/#/pre-login/knowYourTAN"> e-Filing </a> </td>
-										</tr>
-										
-										<tr>
-										<td> <a href="https://unifiedportal-epfo.epfindia.gov.in/publicPortal/"> EPFO . Challan Print </a> </td>
-										<td> <a href="https://portal.esic.gov.in/ESICInsurance1/RevenueOne/MonthlyContribution/eChallan.aspx"> ESIC eChallan </a> </td>
-										<td> <a href="https://ewaybillgst.gov.in/login.aspx"> E-Way Bill </a> </td>
-										<td> <a href="https://esic.gov.in/"> ESIC </a> </td>
-										</tr>
-										
-										<tr>
-										<td> <a href="https://cl.delhivery.com/#/login"> Delhivery </a> </td>
-										<td> <a href="https://www.adanielectricity.com/Payment/Online-Payments"> Adani Power </a> </td>
-										<td> <a href="https://payment.gst.gov.in/payment/"> GST </a> </td>
-										<td> <a href="https://passbook.epfindia.gov.in/MemberPassBook/Login"> EPFO Passbook </a> </td>
-										</tr>
-										
-										<tr>
-										<td> <a href="https://unifiedportal-mem.epfindia.gov.in/memberinterface/"> EPFO Member </a> </td>
-										<td> <a href="https://vibusinessassist.myvi.in/mvbportal"> Vodafone </a> </td>
-										<td> <a href="https://www.mahagst.gov.in/en"> GST [Maharasthra] </a> </td>
-										<td> <a href="https://billpay.tatatelebroadband.com/BroadbandPortal/start"> Tatatele Broadband </a> </td>
-										</tr>
-										
-										<tr>
-										<td> <a href="https://www.icegate.gov.in/DocEnquiry/inputDBKEnquiryAction"> Drawback Enquiry </a> </td>
-										<td> <a href="https://www.myvi.in/postpaid/quick-online-bill-payment"> Vodafone Bill </a> </td>
-										<td> <a href="https://www.knowyourgst.com/gst-number-search/state-bank-of-india-27AAACS8577K2ZO/"> Know your GST </a> </td>
-										<td> <a href=" https://vibusinessmobility.myvi.in/mvbportal/ "> MyVi </a> </td>
-										</tr>
-										
-										<tr>
-										<td> <a href="https://www.idbibank.in/"> IDBI </a> </td>
-										<td> <a href="https://sellercentral.amazon.in/ap/signin?openid.pape.max_auth_age=0&openid.return_to=https%3A%2F%2Fsellercentral.amazon.in%2Fhome&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.assoc_handle=sc_in_amazon_v2&openid.mode=checkid_setup&language=en_IN&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&pageId=sc_in_amazon_v2&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0&ssoResponse=eyJ6aXAiOiJERUYiLCJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiQTI1NktXIn0.76ZcM3_WyK1UHkGdhEX5e9Ru73F9N4QLg6suxli3txeWZ37hYFDTtg.6mDeKpY6fyhlfdyu.O4wkkPngoq-FTFUL9RuD2Z_AVlJOxYEZ7y3aXfgwCPCZAtqxeLBYd4O4NWPtq6M1dPHGqVPO-r7L9LfT8BWbdjAZ5I_4jTcjmTLQQbzp1Gta6Nt4dsoJ3_OCB4CW0rOQ6IkDc9EboB_Trkif90Da0wfbANqpHeJXp-MCYvCr9s3ojoIUnZ0_BL2VNenBL9sKfsTVMev5pA.3yaqJRBTQ2EB9uRIK0wH1Q"> Amazon Seller </a> </td>
-										<td> <a href="https://seller.flipkart.com/grow"> Flipkart Seller </a> </td>
-										<td> <a href="https://www.incometax.gov.in/iec/foportal/"> IncomeTax </a> </td>
-										</tr>
-										
-										<tr>
-										<td> <a href="https://www.bestundertaking.net/Quickpayment.aspx?ReturnURL=billinfo.aspx"> Best Undertaking </a> </td>
-										<td> <a href="https://vibusinessmobility.myvi.in/mvbportal"> BusinessMobility </a> </td>
-										<td> <a href=" # ">  </a> </td>
-										<td> <a href=" # ">  </a> </td>
-										</tr>
-										</tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="slide" style="background-image: url('images/sales.webp');">
-      <div class="content">
-        <h1>Sales</h1>
-        <table>
-										<tbody>
-										<tr>
-										<td> <a href="https://sellercentral.amazon.in/ap/signin?openid.pape.max_auth_age=0&openid.return_to=https%3A%2F%2Fsellercentral.amazon.in%2Fhome&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.assoc_handle=sc_in_amazon_v2&openid.mode=checkid_setup&language=en_IN&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&pageId=sc_in_amazon_v2&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0&ssoResponse=eyJ6aXAiOiJERUYiLCJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiQTI1NktXIn0.HNhqH-yuMGU0cPfK0HttoPTkM07GWXPxT2EhAiC2qYfFENsxtQJMzw.50W51XHKRB-qWh7n.Gk3nTiFPWovY5XmolKhTnAP4U6wcflTWWI3Ij6x9c4FJKA0z4bcYuxzQPIz3pPF46xljel7i4wsQzPtBO_9nSFCi4itNin6HC-aVuOHjn-hLz_Bl1nwxcrfzLmj9MIhbv1FsxLDSjibltUQA61h4wqSkuU_-AqH3ow1PgLuH-Ixvk1MLhTLvbDUnDP2K2dus-crTV-TIfrvyQTwDGFE8zG15QZwUuZRAEdK8HzN3Sa7sq_zXUHpzEHVtpn019V_jgnK8.--YgIsnYDD7doo_lEXPNqA"> Amazon Seller Central </a> </td>
-										<td> <a href="https://cambridgegarments.com/cbg-adm/"> Cambridge </a> </td>
-										<td> <a href="https://www.cambridgegarments.com/"> Cambridge Garments </a> </td>
-										<td> <a href="https://www.unirecstore.com/"> Unirec Store </a> </td>
-										</tr>
-										
-										<tr>
-										<td> <a href="http://uniformrepublic.com/"> Uniform Republic </a> </td>
-										<td> <a href="https://one.delhivery.com/v2/login"> Delhivery </a> </td>
-										<td> <a href="https://www.unimask.in/"> Unimask </a> </td>
-										<td> <a href="https://razorpay.com/"> Razorpay </a> </td>
-										</tr>
-										
-										<tr>
-										<td> <a href="https://seller.flipkart.com/"> Filpkart Seller </a> </td>
-										<td> <a href="https://bhishipconsole.vpi.vpsvc.com/VPIShippingConsole/"> Bhiship Console </a> </td>
-										<td> <a href="https://pom.cimpress.io"> Production Order Manager </a> </td>
-										<td> <a href="https://accounts.shopify.com/lookup?rid=9e57dfda-19cb-4234-99a5-9a59557bcbac"> Shopify </a> </td>
-										</tr>
-										
-										<tr>
-										<td> <a href="https://vpihelpdesk.vpi.vpsvc.com/VPIHelpdesk"> HelpDesk Tool </a> </td>
-										<td> <a href="https://www.charactercountonline.com/"> Character Count </a> </td>
-										<td> <a href="https://app.easyecom.io/V2/account/auth/login"> Easycom </a> </td>
-										<td> <a href="https://vendorportal.pvrcinemas.com/"> PVR </a> </td>
-										</tr>
-
-										<tr>
-										<td> <a href="https://imagecolorpicker.com/"> ColorPicker </a> </td>
-										<td> <a href="https://accounts.myntra.com/emaillogin?cidx=partners_mdirect-bb952a4d-38dd-4e69-91c1-90be8e98ff29&pageRequested=https%3A%2F%2Fpartnersapi.myntrainfo.com%2Fapi%2Fuser%2Flogin%2Fpartners%3Fback%3Dhttps%253A%252F%252Fpartners.myntrainfo.com%252FDashboard%253Fstate%253Dpartners-login"> Myntra </a> </td>
-										<td> <a href="https://service.ariba.com/Supplier.aw/109583072/"> Ariba </a> </td>
-										<td> <a href="https://www.cleanpng.com/"> CleanPNG </a> </td>
-										</tr>
-
-										<tr>
-										<td> <a href="https://online.reaconverter.com/convert/dst-to-pdf"> dst </a> </td>
-										<td> <a href="https://www.pantone-colours.com/"> Pantone </a> </td>
-										<td> <a href="https://www.app.aisensy.com/login"> AiSensy </a> </td>
-										<td> <a href="#">  </a> </td>
-										</tr>
-										</tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="slide" style="background-image: url('images/e-commerce.webp');">
-      <div class="content">
-        <h1>E-Commerce</h1>
-        <table>
-										<tbody>
-										<tr>
-											<td> <a href="https://apps.returnprime.co/"> Return Prime </a> </td>
-											<td> <a href="https://admin.shopify.com/"> Shopify Admin </a> </td>
-											<td> <a href="https://shreemaruti.com/track-shipment/"> Shree Maruti Tracking </a> </td>
-											<td> <a href="https://app.shiprocket.in/seller/home"> Shiprocket </a> </td>
-										</tr>
-
-										<tr>
-											<td> <a href="https://sellercentral.amazon.in/"> Amazon Seller Central </a> </td>
-											<td> <a href="https://accounts.myntra.com/"> Myntra Partner Portal </a> </td>
-											<td> <a href="https://business.facebook.com/"> Meta Business Suite </a> </td>
-											<td> <a href="https://www.instagram.com/"> Instagram </a> </td>
-										</tr>
-
-										<tr>
-											<td> <a href="https://app-v2.11za.in/login"> 11za Dashboard </a> </td>
-											<td> <a href="https://dashboard.gokwik.co/login"> Gokwik Dashboard </a> </td>
-											<td> <a href="https://accounts.razorpay.com/"> Razorpay </a> </td>
-											<td> <a href="https://seller.flipkart.com/"> Flipkart Seller </a> </td>
-										</tr>
-										</tbody>
-        </table>
-      </div>
-    </div>
+				<tr>
+				<td> <a href="https://www.virustotal.com/gui/home/upload"> Virus Total </a> </td>
+				<td> <a href="https://virusscan.jotti.org/en-US/scan-file"> Virus Scanner </a> </td>
+				<td> <a href="https://www.hybrid-analysis.com/"> Hybrid Analysis </a> </td>
+				<td> <a href="https://webscout.io/"> Webscout </a> </td>
+				</tr>
+				
+				<tr>
+				<td> <a href="https://10fastfingers.com/"> Fast Fingers </a> </td>
+				<td> <a href="https://monkeytype.com/"> Monkey Type </a> </td>
+				<td> <a href="https://www.typingcore.com/test"> Typing Core </a> </td>
+				<td> <a href="https://www.typing.com/student/lessons"> Typing </a> </td>
+				</tr>
+				
+				<tr>
+				<td> <a href="https://checkshorturl.com/"> CheckShortURL </a> </td>
+				<td> <a href="https://www.expandurl.net/"> ExpandURL </a> </td>
+				<td> <a href="https://www.getlinkinfo.com/"> GetLinkInfo </a> </td>
+				<td> <a href="https://www.shorturl.at/"> Short URL </a> </td>
+				</tr>
+				
+				<tr>
+				<td> <a href="https://free-url-shortener.rb.gy/"> URL Shortener </a> </td>
+				<td> <a href="https://rapidapi-example-url-shortener.vercel.app/"> Rapid API </a> </td>
+				<td> <a href="https://shorturl.me/"> Short URL </a> </td>
+				<td> <a href="https://tinyurl.com/"> Tiny URL </a> </td>
+				</tr>
+			</tbody>
+    </table>
   </div>
 
-  <div class="nav-arrows">
-    <button class="arrow" onclick="prevSlide()">⬅</button>
-    <button class="arrow" onclick="nextSlide()">➡</button>
+  <div class="slide" id="accounts">
+      <h2>Accounts</h2>
+    <table>
+      <tbody>
+        <tr>
+        <td> <a href="https://netbanking.hdfcbank.com/netbanking/"> HDFC </a> </td>
+        <td> <a href="https://unifiedportal-emp.epfindia.gov.in/epfo/"> EPFO </a> </td>
+        <td> <a href="https://udyamregistration.gov.in/UAM-convert-udyam-msme-free-registration.htm"> UAM/UDYAM </a> </td>
+        <td> <a href="https://eportal.incometax.gov.in/iec/foservices/#/pre-login/knowYourTAN"> e-Filing </a> </td>
+        </tr>
+          
+        <tr>
+        <td> <a href="https://unifiedportal-epfo.epfindia.gov.in/publicPortal/"> EPFO . Challan Print </a> </td>
+        <td> <a href="https://portal.esic.gov.in/ESICInsurance1/RevenueOne/MonthlyContribution/eChallan.aspx"> ESIC eChallan </a> </td>
+        <td> <a href="https://ewaybillgst.gov.in/login.aspx"> E-Way Bill </a> </td>
+        <td> <a href="https://esic.gov.in/"> ESIC </a> </td>
+        </tr>
+          
+        <tr>
+        <td> <a href="https://cl.delhivery.com/#/login"> Delhivery </a> </td>
+        <td> <a href="https://www.adanielectricity.com/Payment/Online-Payments"> Adani Power </a> </td>
+        <td> <a href="https://payment.gst.gov.in/payment/"> GST </a> </td>
+        <td> <a href="https://passbook.epfindia.gov.in/MemberPassBook/Login"> EPFO Passbook </a> </td>
+        </tr>
+          
+        <tr>
+        <td> <a href="https://unifiedportal-mem.epfindia.gov.in/memberinterface/"> EPFO Member </a> </td>
+        <td> <a href="https://vibusinessassist.myvi.in/mvbportal"> Vodafone </a> </td>
+        <td> <a href="https://www.mahagst.gov.in/en"> GST [Maharasthra] </a> </td>
+        <td> <a href="https://billpay.tatatelebroadband.com/BroadbandPortal/start"> Tatatele Broadband </a> </td>
+        </tr>
+          
+        <tr>
+        <td> <a href="https://www.icegate.gov.in/DocEnquiry/inputDBKEnquiryAction"> Drawback Enquiry </a> </td>
+        <td> <a href="https://www.myvi.in/postpaid/quick-online-bill-payment"> Vodafone Bill </a> </td>
+        <td> <a href="https://www.knowyourgst.com/gst-number-search/state-bank-of-india-27AAACS8577K2ZO/"> Know your GST </a> </td>
+        <td> <a href=" https://vibusinessmobility.myvi.in/mvbportal/ "> MyVi </a> </td>
+        </tr>
+          
+        <tr>
+        <td> <a href="https://www.idbibank.in/"> IDBI </a> </td>
+        <td> <a href="https://sellercentral.amazon.in/"> Amazon Seller </a> </td>
+        <td> <a href="https://seller.flipkart.com/"> Flipkart Seller </a> </td>
+        <td> <a href="https://www.incometax.gov.in/iec/foportal/"> IncomeTax </a> </td>
+        </tr>
+          
+        <tr>
+        <td> <a href="https://www.bestundertaking.net/Quickpayment.aspx?ReturnURL=billinfo.aspx"> Best Undertaking </a> </td>
+        <td> <a href="https://vibusinessmobility.myvi.in/mvbportal"> BusinessMobility </a> </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
-  <script src="script.js"></script>
+  <div class="slide" id="sales">
+      <h2>Sales</h2>
+        <table>
+				<tbody>
+				<tr>
+				<td> <a href="https://sellercentral.amazon.in/"> Amazon Seller Central </a> </td>
+				<td> <a href="https://cambridgegarments.com/cbg-adm/"> Cambridge </a> </td>
+				<td> <a href="https://www.cambridgegarments.com/"> Cambridge Garments </a> </td>
+				<td> <a href="https://www.unirecstore.com/"> Unirec Store </a> </td>
+				</tr>
+				
+				<tr>
+				<td> <a href="http://uniformrepublic.com/"> Uniform Republic </a> </td>
+				<td> <a href="https://one.delhivery.com/v2/login"> Delhivery </a> </td>
+				<td> <a href="https://smartping.live/entity/register-with"> Smartping </a> </td>
+				<td> <a href="https://razorpay.com/"> Razorpay </a> </td>
+				</tr>
+				
+				<tr>
+				<td> <a href="https://pggui.vispl.in/app/#/login"> Pggui </a> </td>
+				<td> <a href="https://bhishipconsole.vpi.vpsvc.com/VPIShippingConsole/"> Bhiship Console </a> </td>
+				<td> <a href="https://pom.cimpress.io"> Production Order Manager </a> </td>
+				<td> <a href="https://accounts.shopify.com/lookup"> Shopify </a> </td>
+				</tr>
+				
+				<tr>
+				<td> <a href="https://vpihelpdesk.vpi.vpsvc.com/VPIHelpdesk"> HelpDesk Tool </a> </td>
+				<td> <a href="https://www.charactercountonline.com/"> Character Count </a> </td>
+				<td> <a href="https://sevaportalvendors.tatamotors.com/login"> Tata Motors </a> </td>
+				<td> <a href="https://vendorportal.pvrcinemas.com/"> PVR </a> </td>
+				</tr>
+
+				<tr>
+				<td> <a href="https://imagecolorpicker.com/"> ColorPicker </a> </td>
+				<td> <a href="https://www.cleanpng.com/"> CleanPNG </a> </td>
+				<td> <a href="https://online.reaconverter.com/convert/dst-to-pdf"> dst </a> </td>
+				<td> <a href="https://www.pantone-colours.com/"> Pantone </a> </td>
+				</tr>
+
+				<tr>
+				<td> <a href="https://service.ariba.com/Supplier.aw/109583072/"> Ariba </a> </td>
+        <td> <a href="https://www.google.com/"> Google Search </a> </td>
+				</tr>
+				</tbody>
+        </table>
+  </div>
+
+  <div class="slide" id="ecommerce">
+      <h2>Ecommerce</h2>
+      <table>
+        <tbody>
+        <tr>
+          <td><a href="https://apps.returnprime.co/user/login">Return Prime</a></td>
+          <td><a href="https://accounts.shopify.com/lookup">Shopify Admin</a></td>
+          <td><a href="https://shreemaruti.com/track-shipment/">Shree Maruti Tracking</a></td>
+          <td><a href="https://app.shiprocket.in/newlogin">Shiprocket</a></td>
+        </tr>
+
+        <tr>
+          <td><a href="https://sellercentral.amazon.in/">Amazon Seller Central</a></td>
+          <td><a href="https://accounts.myntra.com/login?cidx=sis-dcfae8b8-016b-462f-ac90-0cb9a54cc647">Myntra Partner Portal</a></td>
+          <td><a href="https://business.facebook.com/">Meta Business Suite</a></td>
+          <td><a href="https://www.instagram.com/">Instagram</a></td>
+        </tr>
+
+        <tr>
+          <td><a href="https://app-v2.11za.in/login">11za Dashboard</a></td>
+          <td><a href="https://dashboard.gokwik.co/login">Gokwik Dashboard</a></td>
+          <td><a href="https://accounts.razorpay.com/auth/?x-country-code=IN">Razorpay</a></td>
+          <td><a href="https://seller.flipkart.com/">Flipkart Seller</a></td>
+        </tr>
+        </tbody>
+      </table>
+  </div>
+
+  <div class="slide" id="ginesys">
+      <h2>Ginesys</h2>
+		<table>
+		  <tbody>
+				<tr>
+					<td><a href="https://brandstore.ginesys.cloud" target="_blank">Ginesys</a></td>
+					<td><a href="https://care.ginesys.in/s/login/" target="_blank">Ginesys Support</a></td>
+					<td><a href="https://ginesysone.atlassian.net/wiki/spaces/" target="_blank">Ginesys Wiki</a></td>
+					<td><a href="https://remote.ginesys.in/" target="_blank">Remote</a></td>
+				</tr>
+      </tbody>
+</table>
+  </div>
+
+  <!-- ORIGINAL PREVIOUS/NEXT BUTTONS -->
+  <div class="nav-buttons">
+    <button class="prev-btn">◀ Previous</button>
+    <button class="next-btn">Next ▶</button>
+  </div>
+
+  <footer>Use ← and → keys or buttons to navigate</footer>
+
+</div>
 
 <script>
-  const hashToSlide = {
-    "#intro": 0,
-    "#general": 1,
-    "#accounts": 2,
-    "#sales": 3,
-    "#e-commerce": 4,
-  };
+  const slides = document.querySelectorAll('.slide');
 
-  window.addEventListener("hashchange", () => {
-    const slideIndex = hashToSlide[window.location.hash];
-    if (slideIndex !== undefined) goToSlide(slideIndex);
-  });
+  const slideIDs = [
+    "general",
+    "accounts",
+    "sales",
+    "ecommerce",
+    "ginesys"
+  ];
 
-  window.addEventListener("DOMContentLoaded", () => {
-    const slideIndex = hashToSlide[window.location.hash];
-    if (slideIndex !== undefined) goToSlide(slideIndex);
-  });
+  let current = 0;
 
-    <!-- 🧠 Automatic Favicon Script -->
-    document.addEventListener("DOMContentLoaded", function() {
-      document.querySelectorAll("a[href]").forEach(a => {
-        // ❌ Skip button-style links or navigation links
-        if (a.classList.contains("button") || a.closest("button") || a.closest(".navbar")) return;
-
-        try {
-          const url = new URL(a.href);
-          const faviconUrl = `https://www.google.com/s2/favicons?sz=32&domain=${url.hostname}`;
-
-          // Prevent adding multiple icons
-          if (a.querySelector(".favicon")) return;
-
-          // Create favicon image
-          const img = document.createElement("img");
-          img.src = faviconUrl;
-          img.className = "favicon";
-          img.alt = "";
-
-          // Wrap text in a <span> so underline only affects text
-          const span = document.createElement("span");
-          span.textContent = a.textContent.trim();
-
-          a.textContent = "";
-          a.append(img, span);
-        } catch (e) {
-          console.warn("Invalid link:", a.href);
-        }
-      });
+  function showSlide(index) {
+    slides.forEach((slide, i) => {
+      slide.classList.remove('active');
+      if (i === index) slide.classList.add('active');
     });
+
+    history.replaceState(null, "", "#" + slideIDs[index]);
+  }
+
+  function loadFromHash() {
+    const hash = window.location.hash.replace("#", "");
+    const index = slideIDs.indexOf(hash);
+    if (index >= 0) {
+      current = index;
+      showSlide(current);
+    }
+  }
+
+  function goTo(id) {
+    const index = slideIDs.indexOf(id);
+    if (index >= 0) {
+      current = index;
+      showSlide(current);
+    }
+  }
+
+  document.querySelector('.next-btn').addEventListener('click', () => {
+    current = (current + 1) % slides.length;
+    showSlide(current);
+  });
+
+  document.querySelector('.prev-btn').addEventListener('click', () => {
+    current = (current - 1 + slides.length) % slides.length;
+    showSlide(current);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') {
+      current = (current + 1) % slides.length;
+      showSlide(current);
+    } else if (e.key === 'ArrowLeft') {
+      current = (current - 1 + slides.length) % slides.length;
+      showSlide(current);
+    }
+  });
+
+  window.addEventListener("load", loadFromHash);
+  window.addEventListener("hashchange", loadFromHash);
+
+  showSlide(current);
+
+  function injectFavicons() {
+  const links = document.querySelectorAll("a");
+
+  links.forEach(a => {
+    const url = a.href;
+    try {
+      const domain = new URL(url).hostname;
+      const favicon = `https://www.google.com/s2/favicons?sz=32&domain=${domain}`;
+
+      // Skip if favicon is already added
+      if (a.classList.contains("has-favicon")) return;
+
+      // Create favicon image
+      const img = document.createElement("img");
+      img.src = favicon;
+      img.style.width = "20px";
+      img.style.height = "20px";
+      img.style.verticalAlign = "middle";
+      img.style.marginRight = "8px";
+
+      // Insert icon before the text
+      a.prepend(img);
+
+      a.classList.add("has-favicon");
+
+    } catch (e) {
+      console.warn("Invalid URL for favicon:", url);
+    }
+  });
+}
+
+// Run on page load
+window.addEventListener("load", injectFavicons);
 </script>
 </body>
 </html>
