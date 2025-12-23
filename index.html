@@ -8,60 +8,46 @@
 
 <style>
   body {
-    font-family: 'Comic Sans MS', sans-serif;
+    font-family: 'Segoe Print', sans-serif;
     margin: 0;
     background: linear-gradient(135deg, #0f172a, #1e293b);
     color: #fff;
-    overflow: hidden;  /* ❗ No page scroll */
+    overflow: hidden;
     font-size: 16px;
   }
 
-/* Container does NOT stretch slides */
-.container {
+  .container {
     width: 100%;
     height: 100vh;
     overflow: hidden;
     position: relative;
-}
+  }
 
-/* Slides DO NOT flex, DO NOT stretch */
-.slide {
+  .slide {
     position: absolute;
-    top: 80px;           /* under top menu */
+    top: 80px;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) scale(0.9);
     width: 80%;
     max-width: 1000px;
-
     background: rgba(255, 255, 255, 0.05);
     border-radius: 20px;
     padding: 40px;
     backdrop-filter: blur(10px);
     box-shadow: 0 0 40px rgba(0,0,0,0.3);
-
     opacity: 0;
-    transform: scale(0.9) translate(-50%, 40px);
-    transition: all 0.4s ease;
-
     display: none;
-    max-height: calc(100vh - 200px); /* no overlap with buttons */
-    overflow-y: auto;                /* scroll only if needed */
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+    transition: all 0.5s ease;
+    scroll-behavior: smooth;
+  }
 
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
-
-.slide::-webkit-scrollbar {
-    display: none;
-}
-
-/* Active slide visible & animated */
-.slide.active {
+  .slide.active {
     display: block;
     opacity: 1;
-    transform: scale(1) translate(-50%, 0);
-    height: auto;   /* CRITICAL: auto-resizes to content */
-}
+    transform: translateX(-50%) scale(1);
+  }
 
   h2 {
     font-size: 2.5rem;
@@ -74,7 +60,6 @@
     line-height: 1.6;
   }
 
-  /* Top Navigation — Fixed */
   .jump-menu {
     position: fixed;
     top: 15px;
@@ -100,7 +85,11 @@
     background: #0ea5e9;
   }
 
-  /* Table styling */
+  .menu-btn.active {
+    font-weight: bold;
+    color: #c083d8;
+  }
+
   table {
     width: 100%;
     margin-top: 20px;
@@ -123,7 +112,6 @@
     text-decoration: underline;
   }
 
-  /* Nav buttons fixed at bottom */
   .nav-buttons {
     position: fixed;
     bottom: 40px;
@@ -162,6 +150,32 @@
     margin-right: 6px;
     vertical-align: middle;
   }
+
+  @media (max-width: 768px) {
+    .slide { width: 90%; padding: 20px; }
+    h2 { font-size: 1.8rem; }
+    p { font-size: 1rem; }
+    .jump-menu button { padding: 6px 12px; font-size: 12px; }
+    .nav-buttons button { padding: 10px 18px; font-size: 14px; }
+  }
+
+  @media (max-width: 480px) {
+    .slide { width: 95%; padding: 15px; }
+    h2 { font-size: 1.5rem; }
+    p { font-size: 0.95rem; }
+    .jump-menu button { padding: 5px 10px; font-size: 11px; }
+    .nav-buttons button { padding: 8px 14px; font-size: 12px; }
+  }
+
+.slide {
+  overflow-y: scroll; /* keep scrolling functionality */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+.slide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}
 
   /* 🔹 MOBILE SUPPORT: stack content in one column */
 @media (max-width: 768px) {
@@ -237,16 +251,13 @@
 
 <div class="container">
 
-  <!-- TOP NAVIGATION -->
   <div class="jump-menu">
-    <button onclick="goTo('general')">General</button>
-    <button onclick="goTo('accounts')">Accounts</button>
-    <button onclick="goTo('sales')">Sales</button>
-    <button onclick="goTo('ecommerce')">Ecommerce</button>
-    <button onclick="goTo('ginesys')">Ginesys</button>
+    <button class="menu-btn" data-target="general">General</button>
+    <button class="menu-btn" data-target="accounts">Accounts</button>
+    <button class="menu-btn" data-target="sales">Sales</button>
+    <button class="menu-btn" data-target="ecommerce">Ecommerce</button>
+    <button class="menu-btn" data-target="ginesys">Ginesys</button>
   </div>
-
-  <!-- SLIDES ONLY (NO TITLE/INTRO/CONCLUSION/QA) -->
 
   <div class="slide active" id="general">
       <h2>General</h2>
@@ -421,50 +432,50 @@
     <table>
       <tbody>
         <tr>
-        <td> <a href="https://netbanking.hdfcbank.com/netbanking/"> HDFC </a> </td>
-        <td> <a href="https://unifiedportal-emp.epfindia.gov.in/epfo/"> EPFO </a> </td>
-        <td> <a href="https://udyamregistration.gov.in/UAM-convert-udyam-msme-free-registration.htm"> UAM/UDYAM </a> </td>
-        <td> <a href="https://eportal.incometax.gov.in/iec/foservices/#/pre-login/knowYourTAN"> e-Filing </a> </td>
+          <td> <a href="https://netbanking.hdfcbank.com/netbanking/"> HDFC </a> </td>
+          <td> <a href="https://unifiedportal-emp.epfindia.gov.in/epfo/"> EPFO </a> </td>
+          <td> <a href="https://udyamregistration.gov.in/UAM-convert-udyam-msme-free-registration.htm"> UAM/UDYAM </a> </td>
+          <td> <a href="https://eportal.incometax.gov.in/iec/foservices/#/pre-login/knowYourTAN"> e-Filing </a> </td>
         </tr>
           
         <tr>
-        <td> <a href="https://unifiedportal-epfo.epfindia.gov.in/publicPortal/"> EPFO . Challan Print </a> </td>
-        <td> <a href="https://portal.esic.gov.in/ESICInsurance1/RevenueOne/MonthlyContribution/eChallan.aspx"> ESIC eChallan </a> </td>
-        <td> <a href="https://ewaybillgst.gov.in/login.aspx"> E-Way Bill </a> </td>
-        <td> <a href="https://esic.gov.in/"> ESIC </a> </td>
+          <td> <a href="https://yonobusiness.sbi.bank.in/yonobusinesslogin/"> YonoBusiness </a> </td>
+          <td> <a href="https://portal.esic.gov.in/ESICInsurance1/RevenueOne/MonthlyContribution/eChallan.aspx"> ESIC eChallan </a> </td>
+          <td> <a href="https://ewaybillgst.gov.in/login.aspx"> E-Way Bill </a> </td>
+          <td> <a href="https://esic.gov.in/"> ESIC </a> </td>
         </tr>
           
         <tr>
-        <td> <a href="https://cl.delhivery.com/#/login"> Delhivery </a> </td>
-        <td> <a href="https://www.adanielectricity.com/Payment/Online-Payments"> Adani Power </a> </td>
-        <td> <a href="https://payment.gst.gov.in/payment/"> GST </a> </td>
-        <td> <a href="https://passbook.epfindia.gov.in/MemberPassBook/Login"> EPFO Passbook </a> </td>
+          <td> <a href="https://cl.delhivery.com/#/login"> Delhivery </a> </td>
+          <td> <a href="https://www.adanielectricity.com/Payment/Online-Payments"> Adani Power </a> </td>
+          <td> <a href="https://payment.gst.gov.in/payment/"> GST </a> </td>
+          <td> <a href="https://passbook.epfindia.gov.in/MemberPassBook/Login"> EPFO Passbook </a> </td>
         </tr>
           
         <tr>
-        <td> <a href="https://unifiedportal-mem.epfindia.gov.in/memberinterface/"> EPFO Member </a> </td>
-        <td> <a href="https://vibusinessassist.myvi.in/mvbportal"> Vodafone </a> </td>
-        <td> <a href="https://www.mahagst.gov.in/en"> GST [Maharasthra] </a> </td>
-        <td> <a href="https://billpay.tatatelebroadband.com/BroadbandPortal/start"> Tatatele Broadband </a> </td>
+          <td> <a href="https://unifiedportal-mem.epfindia.gov.in/memberinterface/"> EPFO Member </a> </td>
+          <td> <a href="https://vibusinessassist.myvi.in/mvbportal"> Vodafone </a> </td>
+          <td> <a href="https://www.mahagst.gov.in/en"> GST [Maharasthra] </a> </td>
+          <td> <a href="https://billpay.tatatelebroadband.com/BroadbandPortal/start"> Tatatele Broadband </a> </td>
         </tr>
           
         <tr>
-        <td> <a href="https://www.icegate.gov.in/DocEnquiry/inputDBKEnquiryAction"> Drawback Enquiry </a> </td>
-        <td> <a href="https://www.myvi.in/postpaid/quick-online-bill-payment"> Vodafone Bill </a> </td>
-        <td> <a href="https://www.knowyourgst.com/gst-number-search/state-bank-of-india-27AAACS8577K2ZO/"> Know your GST </a> </td>
-        <td> <a href=" https://vibusinessmobility.myvi.in/mvbportal/ "> MyVi </a> </td>
+          <td> <a href="https://www.icegate.gov.in/DocEnquiry/inputDBKEnquiryAction"> Drawback Enquiry </a> </td>
+          <td> <a href="https://www.myvi.in/postpaid/quick-online-bill-payment"> Vodafone Bill </a> </td>
+          <td> <a href="https://www.knowyourgst.com/gst-number-search/state-bank-of-india-27AAACS8577K2ZO/"> Know your GST </a> </td>
+          <td> <a href=" https://vibusinessmobility.myvi.in/mvbportal/ "> MyVi </a> </td>
         </tr>
           
         <tr>
-        <td> <a href="https://www.idbibank.in/"> IDBI </a> </td>
-        <td> <a href="https://sellercentral.amazon.in/"> Amazon Seller </a> </td>
-        <td> <a href="https://seller.flipkart.com/"> Flipkart Seller </a> </td>
-        <td> <a href="https://www.incometax.gov.in/iec/foportal/"> IncomeTax </a> </td>
+          <td> <a href="https://www.idbibank.in/"> IDBI </a> </td>
+          <td> <a href="https://sellercentral.amazon.in/"> Amazon Seller </a> </td>
+          <td> <a href="https://seller.flipkart.com/"> Flipkart Seller </a> </td>
+          <td> <a href="https://www.incometax.gov.in/iec/foportal/"> IncomeTax </a> </td>
         </tr>
           
         <tr>
-        <td> <a href="https://www.bestundertaking.net/Quickpayment.aspx?ReturnURL=billinfo.aspx"> Best Undertaking </a> </td>
-        <td> <a href="https://vibusinessmobility.myvi.in/mvbportal"> BusinessMobility </a> </td>
+          <td> <a href="https://www.bestundertaking.net/Quickpayment.aspx?ReturnURL=billinfo.aspx"> Best Undertaking </a> </td>
+          <td> <a href="https://www.tdscpc.gov.in/app/login.xhtml"> tgscpc </a> </td>
         </tr>
       </tbody>
     </table>
@@ -472,55 +483,55 @@
 
   <div class="slide" id="sales">
       <h2>Sales</h2>
-        <table>
-				<tbody>
+    <table>
+			<tbody>
 				<tr>
-				<td> <a href="https://sellercentral.amazon.in/"> Amazon Seller Central </a> </td>
-				<td> <a href="https://cambridgegarments.com/cbg-adm/"> Cambridge </a> </td>
-				<td> <a href="https://www.cambridgegarments.com/"> Cambridge Garments </a> </td>
-				<td> <a href="https://www.unirecstore.com/"> Unirec Store </a> </td>
+          <td> <a href="https://sellercentral.amazon.in/"> Amazon Seller Central </a> </td>
+          <td> <a href="https://cambridgegarments.com/cbg-adm/"> Cambridge </a> </td>
+          <td> <a href="https://www.cambridgegarments.com/"> Cambridge Garments </a> </td>
+          <td> <a href="https://www.unirecstore.com/"> Unirec Store </a> </td>
 				</tr>
 				
 				<tr>
-				<td> <a href="http://uniformrepublic.com/"> Uniform Republic </a> </td>
-				<td> <a href="https://one.delhivery.com/v2/login"> Delhivery </a> </td>
-				<td> <a href="https://smartping.live/entity/register-with"> Smartping </a> </td>
-				<td> <a href="https://razorpay.com/"> Razorpay </a> </td>
+          <td> <a href="http://uniformrepublic.com/"> Uniform Republic </a> </td>
+          <td> <a href="https://one.delhivery.com/v2/login"> Delhivery </a> </td>
+          <td> <a href="https://smartping.live/entity/register-with"> Smartping </a> </td>
+          <td> <a href="https://razorpay.com/"> Razorpay </a> </td>
 				</tr>
 				
 				<tr>
-				<td> <a href="https://pggui.vispl.in/app/#/login"> Pggui </a> </td>
-				<td> <a href="https://bhishipconsole.vpi.vpsvc.com/VPIShippingConsole/"> Bhiship Console </a> </td>
-				<td> <a href="https://pom.cimpress.io"> Production Order Manager </a> </td>
-				<td> <a href="https://accounts.shopify.com/lookup"> Shopify </a> </td>
+          <td> <a href="https://pggui.vispl.in/app/#/login"> Pggui </a> </td>
+          <td> <a href="https://bhishipconsole.vpi.vpsvc.com/VPIShippingConsole/"> Bhiship Console </a> </td>
+          <td> <a href="https://pom.cimpress.io"> Production Order Manager </a> </td>
+          <td> <a href="https://accounts.shopify.com/lookup"> Shopify </a> </td>
 				</tr>
 				
 				<tr>
-				<td> <a href="https://vpihelpdesk.vpi.vpsvc.com/VPIHelpdesk"> HelpDesk Tool </a> </td>
-				<td> <a href="https://www.charactercountonline.com/"> Character Count </a> </td>
-				<td> <a href="https://sevaportalvendors.tatamotors.com/login"> Tata Motors </a> </td>
-				<td> <a href="https://vendorportal.pvrcinemas.com/"> PVR </a> </td>
+          <td> <a href="https://vpihelpdesk.vpi.vpsvc.com/VPIHelpdesk"> HelpDesk Tool </a> </td>
+          <td> <a href="https://www.charactercountonline.com/"> Character Count </a> </td>
+          <td> <a href="https://sevaportalvendors.tatamotors.com/login"> Tata Motors </a> </td>
+          <td> <a href="https://vendorportal.pvrcinemas.com/"> PVR </a> </td>
 				</tr>
 
 				<tr>
-				<td> <a href="https://imagecolorpicker.com/"> ColorPicker </a> </td>
-				<td> <a href="https://www.cleanpng.com/"> CleanPNG </a> </td>
-				<td> <a href="https://online.reaconverter.com/convert/dst-to-pdf"> dst </a> </td>
-				<td> <a href="https://www.pantone-colours.com/"> Pantone </a> </td>
+          <td> <a href="https://imagecolorpicker.com/"> ColorPicker </a> </td>
+          <td> <a href="https://www.cleanpng.com/"> CleanPNG </a> </td>
+          <td> <a href="https://online.reaconverter.com/convert/dst-to-pdf"> dst </a> </td>
+          <td> <a href="https://www.pantone-colours.com/"> Pantone </a> </td>
 				</tr>
 
 				<tr>
-				<td> <a href="https://service.ariba.com/Supplier.aw/109583072/"> Ariba </a> </td>
-        <td> <a href="https://www.google.com/"> Google Search </a> </td>
-				</tr>
-				</tbody>
-        </table>
+				  <td> <a href="https://service.ariba.com/Supplier.aw/109583072/"> Ariba </a> </td>
+          <td> <a href="https://www.google.com/"> Google Search </a> </td>
+			  </tr>
+		  </tbody>
+    </table>
   </div>
 
   <div class="slide" id="ecommerce">
       <h2>Ecommerce</h2>
-      <table>
-        <tbody>
+    <table>
+      <tbody>
         <tr>
           <td><a href="https://apps.returnprime.co/user/login">Return Prime</a></td>
           <td><a href="https://accounts.shopify.com/lookup">Shopify Admin</a></td>
@@ -541,6 +552,7 @@
           <td><a href="https://accounts.razorpay.com/auth/?x-country-code=IN">Razorpay</a></td>
           <td><a href="https://seller.flipkart.com/">Flipkart Seller</a></td>
         </tr>
+<<<<<<< HEAD
         </tbody>
          
         <tr>
@@ -548,6 +560,10 @@
         </tr>
         </tbody>
       </table>
+=======
+      </tbody>
+    </table>
+>>>>>>> 87c3e85428e198c862635efa06d21b2487745af7
   </div>
 
   <div class="slide" id="ginesys">
@@ -561,13 +577,7 @@
 					<td><a href="https://remote.ginesys.in/" target="_blank">Remote</a></td>
 				</tr>
       </tbody>
-</table>
-  </div>
-
-  <!-- ORIGINAL PREVIOUS/NEXT BUTTONS -->
-  <div class="nav-buttons">
-    <button class="prev-btn">◀ Previous</button>
-    <button class="next-btn">Next ▶</button>
+    </table>
   </div>
 
   <footer>Use ← and → keys or buttons to navigate</footer>
@@ -575,82 +585,111 @@
 </div>
 
 <script>
-  const slides = document.querySelectorAll('.slide');
+const slides = document.querySelectorAll('.slide');
+const slideIDs = ["general", "accounts", "sales", "ecommerce", "ginesys"];
+let current = 0;
 
-  const slideIDs = [
-    "general",
-    "accounts",
-    "sales",
-    "ecommerce",
-    "ginesys"
-  ];
-
-  let current = 0;
-
-  function showSlide(index) {
-    slides.forEach((slide, i) => {
-      slide.classList.remove('active');
-      if (i === index) slide.classList.add('active');
-    });
-
-    history.replaceState(null, "", "#" + slideIDs[index]);
-  }
-
-  function loadFromHash() {
-    const hash = window.location.hash.replace("#", "");
-    const index = slideIDs.indexOf(hash);
-    if (index >= 0) {
-      current = index;
-      showSlide(current);
+function showSlide(index) {
+  slides.forEach((slide, i) => {
+    slide.classList.remove('active');
+    if (i === index) {
+      slide.classList.add('active');
+      slide.scrollTop = 0; // Scroll to top
     }
-  }
+  });
 
-  function goTo(id) {
-    const index = slideIDs.indexOf(id);
-    if (index >= 0) {
-      current = index;
-      showSlide(current);
-    }
-  }
+  // Update URL hash
+  location.hash = slideIDs[index];
 
-  document.querySelector('.next-btn').addEventListener('click', () => {
+  // Highlight menu button
+  document.querySelectorAll('.menu-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.target === slideIDs[index]);
+  });
+}
+
+function loadFromHash() {
+  const hash = window.location.hash.replace("#", "");
+  const index = slideIDs.indexOf(hash);
+  if (index >= 0) {
+    current = index;
+    showSlide(current);
+  }
+}
+
+function goTo(id) {
+  const index = slideIDs.indexOf(id);
+  if (index >= 0) {
+    current = index;
+    showSlide(current);
+  }
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight') {
     current = (current + 1) % slides.length;
     showSlide(current);
-  });
-
-  document.querySelector('.prev-btn').addEventListener('click', () => {
+  } else if (e.key === 'ArrowLeft') {
     current = (current - 1 + slides.length) % slides.length;
     showSlide(current);
+  }
+});
+
+window.addEventListener("hashchange", loadFromHash);
+
+document.querySelectorAll('.menu-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    goTo(btn.dataset.target);
   });
+});
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight') {
-      current = (current + 1) % slides.length;
-      showSlide(current);
-    } else if (e.key === 'ArrowLeft') {
-      current = (current - 1 + slides.length) % slides.length;
-      showSlide(current);
-    }
-  });
-
-  window.addEventListener("load", loadFromHash);
-  window.addEventListener("hashchange", loadFromHash);
-
+// Initial load
+window.addEventListener("DOMContentLoaded", () => {
+  loadFromHash();
   showSlide(current);
+});
+// --- Navigate to a specific slide ---
+function goTo(id) {
+  const index = slideIDs.indexOf(id);
+  if (index >= 0) {
+    current = index;
+    showSlide(current);
+    // Update URL hash without page jump
+    history.replaceState(null, null, `#${id}`);
+  }
+}
 
-  function injectFavicons() {
+// --- Load slide from hash ---
+function loadFromHash() {
+  const hash = window.location.hash.replace("#", "");
+  const index = slideIDs.indexOf(hash);
+  if (index >= 0) {
+    current = index;
+    showSlide(current);
+  }
+}
+
+// --- Menu buttons click ---
+document.querySelectorAll('.menu-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    goTo(btn.dataset.target);
+  });
+});
+
+// --- Initial load ---
+window.addEventListener("load", loadFromHash);
+window.addEventListener("hashchange", loadFromHash);
+
+// --- Inject favicons ---
+function injectFavicons() {
   const links = document.querySelectorAll("a");
-
   links.forEach(a => {
     const url = a.href;
     try {
       const domain = new URL(url).hostname;
       const favicon = `https://www.google.com/s2/favicons?sz=32&domain=${domain}`;
 
-      // Skip if favicon is already added
-      if (a.classList.contains("has-favicon")) return;
+      if (a.classList.contains("has-favicon")) return; // only once
 
-      // Create favicon image
       const img = document.createElement("img");
       img.src = favicon;
       img.style.width = "20px";
@@ -658,18 +697,15 @@
       img.style.verticalAlign = "middle";
       img.style.marginRight = "8px";
 
-      // Insert icon before the text
       a.prepend(img);
-
       a.classList.add("has-favicon");
-
     } catch (e) {
       console.warn("Invalid URL for favicon:", url);
     }
   });
 }
 
-// Run on page load
+// --- Run after page load ---
 window.addEventListener("load", injectFavicons);
 </script>
 </body>
